@@ -37,3 +37,4 @@ For example CDR files which is generate in telecom companies.
 4. change RuleEnginee function under report.sh script according your business rules. 
 	
 4. Add this script into crontab or other scheduler tool. 
+
