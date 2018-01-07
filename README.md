@@ -8,8 +8,8 @@ For example CDR files which is generate in telecom companies.
 
 1. Download script and uncompress file.
 2. Change predefined variable values according your environment. 
-		# Ypu can keep. Properly need to run today's files.
-	dateee=`date +%Y%m%d`
+# You can keep. Properly need to run today's files.
+    dateee=`date +%Y%m%d`
     dateee_filter=`date +%Y-%m-%d`
     dateee_old=`date +%Y%m%d --date="1 day ago"` # how much day ago need to remove to olders files. 
 	   # change it, You can add more 
