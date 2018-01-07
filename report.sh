@@ -6,9 +6,7 @@
 dateee=`date +%Y%m%d`
 dateee_filter=`date +%Y-%m-%d`
 dateee_old=`date +%Y%m%d --date="1 day ago"`
-	
-declare -r prePaid=""
-declare -r posPaid=""
+
 declare -r dispatch1=""
 declare -r dispatch2=""
 declare -r curr=`pwd`
@@ -80,7 +78,7 @@ RuleEnginee() {
 	echo "Still not ready. Please develop it"
 }
 
-ListenFolderAndLogCorrect() {
+ListenFolder() {
 	local Folder=$1
 	local prfx=$2
 	cd $Folder
@@ -97,7 +95,7 @@ ListenFolderAndLogCorrect() {
 			done
 			mv $CacheDir/$prfx.currList.cache $CacheDir/$prfx.scanned_file.cache    # current List already scanned. so rename it.
 		fi
-	sleep ${SleepPeriod}s                                                            # if folder content changes less frequently , then can be increase this value. 
+	sleep ${SleepPeriod}s                                                                   # if folder content changes less frequently , then can be increase this value. 
 	done
 }
 
@@ -105,29 +103,17 @@ main() {
 	# this function need to call per 5-10 min by CRONTAB.
 	ProcessStatus dis1
 	if [ $? -ne 0 ]; then
-		ListenFolderAndLogCorrect $dispatch1 dis1 &
+		ListenFolder $dispatch1 dis1 &
 		echo $! > $PidLog/dis1.pid
 	fi
 	ProcessStatus dis2
 	if [ $? -ne 0 ]; then
-		ListenFolderAndLogCorrect $dispatch2 dis2 &
+		ListenFolder $dispatch2 dis2 &
 		echo $! > $PidLog/dis2.pid
-	fi
-	ProcessStatus pre
-	if [ $? -ne 0 ]; then
-		ListenFolderAndLogCorrect $prePaid pre &
-		echo $! > $PidLog/pre.pid
-	fi
-	ProcessStatus pos
-	if [ $? -ne 0 ]; then
-		ListenFolderAndLogCorrect $posPaid pos &
-		echo $! > $PidLog/pos.pid
 	fi
 	# Combine LOGS if you need to output one file from multiple folders. 
 	LogCombine dis1
 	LogCombine dis2
-	LogCombine pre
-	LogCombine pos
 	# if you need to remove old files.
 	logRemove $RemoveFileDayAgo
 }
